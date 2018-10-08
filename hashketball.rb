@@ -1,3 +1,5 @@
+require "pry"
+
 def game_hash
   game={
 
@@ -117,12 +119,14 @@ def game_hash
 end
 
 def num_points_scored (player)
+  player_hash={}
   game_hash.each do |location, team_data|
-    team_data[:players].each do |player_names, data|
-      if (player_names==player)
-        return data[:points]
-      end
+    player_hash=team_data[:players].find do |player_names, data|
+       player_names==player
     end
+    if player_hash!=nil 
+      return player_hash[1][:points]
+    end 
   end
 end
 
@@ -193,5 +197,14 @@ def big_shoe_rebounds
       end
     end
   end
-
 end
+
+def add_to_slam 
+  game_hash.each do |location, team_data|
+    if location==:away
+    team_data[:players].each do |names, stats|
+        states[:slam_dunk]+=1
+      end 
+    end 
+  end 
+end 
